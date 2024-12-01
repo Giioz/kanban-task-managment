@@ -33,7 +33,7 @@ export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
                 <div className='flex items-center space-x-2'>
                     <h3 className='max-w-[200px] md:text-2xl text-xl font-bold md:ml-20 font-sans'>{board?.name}</h3>
                     <div className='h-4 flex items-center' onClick={() => setDropdown(state => !state)}>
-                        <img className='md:hidden' src={openDropdown ? iconUp : iconDown} alt="" />
+                        <img className='md:hidden cursor-pointer' src={openDropdown ? iconUp : iconDown} alt="" />
                     </div>
                 </div>
             </div>
