@@ -1,5 +1,5 @@
 // redux
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Boards from "../interfaces/boardInterface";
 // images
 import boardImage from "../assets/board-image.svg"
@@ -9,9 +9,10 @@ import darkIcon from "../assets/darkIcon.svg"
 import { Switch } from "@headlessui/react";
 import useDarkMode from "../hooks/useDarkMode";
 import { useState } from "react";
+import boardsSlice from "../redux/boardsSlice";
 
-export const HeaderDropdown = ({setDropdown}:any) => {
-
+export const HeaderDropdown = ({setDropdown, setBoardModelOpen}:any) => {
+  const dispatch = useDispatch()
     // dark mode switch
   const [colorTheme, setTheme] = useDarkMode()
   const [darkSide, setDarkSide] = useState(
@@ -54,6 +55,9 @@ export const HeaderDropdown = ({setDropdown}:any) => {
                     className={`flex items-baseline space-x-2 px-5 py-4 
                     ${board.isActive && 'bg-[#635FC7] rounded-r-full text-white mr-8'}`}
                     key={index}
+                    onClick={() => {
+                        dispatch(boardsSlice.actions.setBoardActive({index}))
+                    }}
                     >
                         <img src={boardImage} className="h-4 text-red-400"/>
                         <p
@@ -68,7 +72,11 @@ export const HeaderDropdown = ({setDropdown}:any) => {
                 >
                     <img src={boardImage} alt="" />
                     <p
-                    className="text-lg font-bold"
+                    className="text-lg font-bold cursor-pointer"
+                    onClick={() => {
+                        setBoardModelOpen(true);
+                        setDropdown(false)
+                    }}
                     >
                         + Create New Board
                     </p>
