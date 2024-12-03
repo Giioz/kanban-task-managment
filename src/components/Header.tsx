@@ -14,12 +14,17 @@ import dots from '../assets/dots.svg'
 import { HeaderDropdown } from './HeaderDropdown'
 import { AddEditBoardModal } from '../modals/AddEditBoardModal'
 import { useDispatch, useSelector } from 'react-redux'
+import { AddEditTaskModal } from '../modals/AddEditTaskModal'
 
 export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
-  const dispatch = useDispatch()
+//   const dispatch = useDispatch()
 
   const [openDropdown, setDropdown] = useState(false);
+  const [openAddEditTask, setopenAddEditTask] = useState(false)
   const [boardType, setBoardType] = useState('add')
+  const [taskType, settaskType] = useState('add')
+  const [device, setdevice] = useState('mobile')
+
 
   const boards = useSelector((state:boardInterface) => state.boards)
   const board = boards.find( board => board.isActive)
@@ -44,6 +49,9 @@ export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
                     + Add New Task
                 </button>
                 <button
+                onClick={() => {
+                    setopenAddEditTask(state => !state)
+                }}
                 className='button py-1 px-3 w-[48px] flex items-center justify-center h-[32px] md:hidden'>
                     <img className='w-3 h-3' src={plus} alt="" />
                 </button>
@@ -56,6 +64,9 @@ export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
         
         {
             boardModelOpen && <AddEditBoardModal type={boardType} setBoardModelOpen={setBoardModelOpen} setDropDown={setDropdown}/>
+        }
+        {
+            openAddEditTask && <AddEditTaskModal setopenAddEditTask={setopenAddEditTask} type={taskType} device={device}/>
         }
     </div>
 
