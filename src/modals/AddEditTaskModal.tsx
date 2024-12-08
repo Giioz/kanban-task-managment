@@ -7,9 +7,11 @@ import Boards, { Column } from "../interfaces/boardInterface"
 import boardsSlice from "../redux/boardsSlice"
 
 
-export const AddEditTaskModal = ({ type, device, setopenAddEditTask, prevColIndex = 0 }:any)=> {
+export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
+    taskIndex, prevColIndex = 0 }:any)=> {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  
   const [isValid, setIsValid] = useState(true)
 
 
@@ -19,7 +21,7 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask, prevColInde
 
   const columns: any = board?.columns
   const col = columns?.find((col:Column, index:number) => index === prevColIndex)
-
+  const [newColIndex, setNewColIndex] = useState(prevColIndex)
   const [status, setStatus] = useState<string | null>(columns && prevColIndex >= 0 && prevColIndex < columns.length
       ? columns[prevColIndex].name
       : null
@@ -65,12 +67,26 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask, prevColInde
             title,
             description,
             subtasks,
-            status
+            status,
+            newColIndex
          }))
+    }else {
+        dispatch(
+            boardsSlice.actions.editTask({
+                title,
+                description,
+                subtasks,
+                status,
+                taskIndex,
+                prevColIndex,
+                newColIndex
+            })
+        )
     }
  }
- const onStatusChange = () => {
-    // TODO ::
+ const onStatusChange = (e:any) => {
+    setStatus(e.target.value)
+    setNewColIndex(e.target.selectedIndex)
  }
 
   return (
@@ -171,7 +187,7 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask, prevColInde
                     </label>
                     <select
                     value={status ?? ''}
-                    onChange={onStatusChange}
+                    onChange={(e) => onStatusChange(e)}
                     className="select-status flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border border-gray-300 dark:border-gray-600 focus:outline-[#635fc7] outline-none">
                     {
                         columns?.map((column:Column, index:number) => (

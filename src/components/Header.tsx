@@ -15,12 +15,15 @@ import { HeaderDropdown } from './HeaderDropdown'
 import { AddEditBoardModal } from '../modals/AddEditBoardModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { AddEditTaskModal } from '../modals/AddEditTaskModal'
+import { ElipsisMenu } from './ElipsisMenu'
 
 export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
 //   const dispatch = useDispatch()
 
   const [openDropdown, setDropdown] = useState(false);
   const [openAddEditTask, setopenAddEditTask] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isElipsisOpen, setIsElipsisOpen] = useState(false)
   const [boardType, setBoardType] = useState('add')
   const [taskType, settaskType] = useState('add')
   const [device, setdevice] = useState('mobile')
@@ -28,6 +31,16 @@ export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
 
   const boards = useSelector((state:boardInterface) => state.boards)
   const board = boards.find( board => board.isActive)
+
+
+  const setOpenEditModal = () => {
+    setBoardModelOpen(true)
+    setIsElipsisOpen(false)
+  }
+  const setOpenDeleteModal = () => {
+    setBoardModelOpen(false)
+    setIsElipsisOpen(true)
+  }
   return (
     <div className='p-4 fixed left-0 right-0 bg-white dark:bg-[#2b2c37] z-50'>
         <header className='flex justify-between dark:text-white items-center'>
@@ -55,7 +68,21 @@ export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
                 className='button py-1 px-3 w-[48px] flex items-center justify-center h-[32px] md:hidden'>
                     <img className='w-3 h-3' src={plus} alt="" />
                 </button>
-                <img className='cursor-pointer h-6' src={dots} alt="" />
+                <img 
+                onClick={() => {
+                    setBoardType('edit')
+                    setDropdown(false)
+                    setIsElipsisOpen(state => !state)
+                }}
+                className='cursor-pointer h-6' src={dots} alt="" />
+
+                {
+                    isElipsisOpen && <ElipsisMenu
+                    setOpenDeleteModal={setIsDeleteModalOpen}
+                    setOpenEditModal={setOpenEditModal}
+                    type="Board"/>
+                }
+
             </div>
 
         </header>
