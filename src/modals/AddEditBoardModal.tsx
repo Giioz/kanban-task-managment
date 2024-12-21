@@ -64,7 +64,7 @@ export const AddEditBoardModal = ({setDropDown,setBoardModelOpen, type}:any) => 
   }
 
   const onSubmit = ((type:string) => {
-        if(type == 'add'){
+        if(type === 'add'){
             dispatch(boardsSlice.actions.addBoard({name, newColumns}))
         }
         else {

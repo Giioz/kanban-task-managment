@@ -83,6 +83,7 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
             })
         )
     }
+    setopenAddEditTask(false)
  }
  const onStatusChange = (e:any) => {
     setStatus(e.target.value)
