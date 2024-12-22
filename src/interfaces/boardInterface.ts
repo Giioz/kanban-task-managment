@@ -3,7 +3,7 @@ interface Subtask {
     isCompleted: boolean;
   }
   
-  interface Task {
+  export interface Task {
     title: string;
     description: string;
     status: string;
@@ -15,7 +15,7 @@ interface Subtask {
     tasks: Task[];
   }
   
-  interface Board {
+  export interface Board {
     name: string;
     isActive: boolean;
     columns: Column[];
