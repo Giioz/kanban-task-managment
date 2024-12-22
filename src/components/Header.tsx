@@ -19,7 +19,14 @@ import { ElipsisMenu } from './ElipsisMenu'
 import { DeleteModal } from '../modals/DeleteModal'
 import boardsSlice from '../redux/boardsSlice'
 
-export const Header = ({boardModelOpen, setBoardModelOpen}:any) => {
+
+interface HeaderProps {
+    boardModelOpen: boolean;
+    setBoardModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+
+
+export const Header: React.FC<HeaderProps> = ({boardModelOpen, setBoardModelOpen}) => {
   const dispatch = useDispatch()
 
   const [openDropdown, setDropdown] = useState(false);
