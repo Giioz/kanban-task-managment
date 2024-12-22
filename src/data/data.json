@@ -3,7 +3,7 @@
     "boards": [
       {
         "name": "Platform Launch",
-        "isActive" : true,
+        "isActive" : false,
         "columns": [
           {
             "name": "Todo",
