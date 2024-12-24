@@ -23,8 +23,8 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
     const [color, setColor] = useState<string | null>(null)
 
     const dispatch =useDispatch()
-    const boards = useSelector((state:boards) => state.boards)
-    const board = boards.find((board:board) => board.isActive)
+    const boards = useSelector((state:any) => state.boards)
+    const board = boards.find((board:any) => board.isActive)
     const col = board?.columns.find((_col:col, i:number) => i === colIndex)
 
     useEffect(() => {
