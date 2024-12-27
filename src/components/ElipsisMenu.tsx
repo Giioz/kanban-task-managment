@@ -3,7 +3,7 @@ import React from 'react'
 export const ElipsisMenu = ({type, setOpenEditModal, setOpenDeleteModal}:any) => {
   return (
      <div
-     className={ type === 'Boards' ? 'absolute top-16 right-6' : 
+     className={ type === 'Boards' ? 'absolute top-13 right-6' : 
         'absolute top-16 right-4'}
      >
 
