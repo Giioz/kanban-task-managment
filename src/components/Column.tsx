@@ -43,7 +43,8 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
       md:tracking-[2em] text-[#828fa3]"
       >
         <div className={`rounded-full w-4 h-4 ${color}`}/>
-        {col.name} ({col.tasks.length})
+        {/* bug here when choosing new created board */}
+        {col.name} ({col?.tasks?.length})
       </p>
 
       {
