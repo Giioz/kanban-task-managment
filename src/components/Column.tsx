@@ -26,7 +26,7 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
     const boards = useSelector((state:any) => state.boards)
     const board = boards.find((board:any) => board.isActive)
     const col = board?.columns.find((_col:col, i:number) => i === colIndex)
-
+    if (!col) return null
     useEffect(() => {
       setColor(shuffle(colors).pop() || null)
     
