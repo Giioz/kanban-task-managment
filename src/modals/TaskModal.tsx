@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { HtmlHTMLAttributes, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Boards, {Subtask } from '../interfaces/boardInterface'
-import { Column } from '../components/Column'
 import dots from '../assets/dots.svg'
 import { ElipsisMenu } from '../components/ElipsisMenu'
 import { Subtask as SubtaskComp } from '../components/Subtask'
 import boardsSlice from '../redux/boardsSlice'
+import { DeleteModal } from './DeleteModal'
+import { AddEditTaskModal } from './AddEditTaskModal'
 
 interface TaskModalProps {
   colIndex : number,
@@ -32,26 +33,47 @@ export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsT
   const [status, setStatus] = useState(task?.status)
   const [elipsisMenuOpen, setElipsisMenuOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false)
   
   const [newColIndex, setNewColIndex] = useState<number>(col && columns ? columns.indexOf(col) : -1);
 
   const setOpenEditModal = () => {
-
+    setIsAddTaskModalOpen(true)
+    setElipsisMenuOpen(false)
   }
 
   const setOpenDeleteModal = () => {
     setIsDeleteModalOpen(true)
+    setElipsisMenuOpen(false)
   }
+
+
+  const onClose = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if(e.target !== e.currentTarget) return
+
+    dispatch(
+      boardsSlice.actions.setTaskStatus(
+        {taskIndex, colIndex, newColIndex, status}
+      )
+    )
+    setIsTaskModalOpen(false)
+  }
+
 
   const onChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setStatus(e.target.value)
     setNewColIndex(e.target.selectedIndex)
   }
 
+  const onDeleteBtnClick = () => {
+    dispatch(boardsSlice.actions.deleteTask({taskIndex, colIndex}))
+    setIsTaskModalOpen(false)
+    setIsDeleteModalOpen(false)
+  }
 
   return (
     <div
-
+      onClick={onClose}
       className=' fixed right-0 left-0 top-0 px-2 py-4 overflow-scroll
       scrollbar-hide z-50 bottom-0 justify-center items-center flex bg-[#00000080]'
     >
@@ -146,6 +168,26 @@ export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsT
          </div>
 
       </div>
+            {
+            isDeleteModalOpen && (
+              <DeleteModal 
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+                onDeleteBtnClick={onDeleteBtnClick}
+                title={task?.title}
+                type='task'/>
+            )
+            }
+            {
+              isAddTaskModalOpen && (
+                <AddEditTaskModal 
+                  setopenAddEditTask={setIsAddTaskModalOpen}
+                  type='edit'
+                  taskIndex={taskIndex}
+                  prevColIndex={colIndex}
+                />
+              )
+            }
+
 
     </div>
   )
