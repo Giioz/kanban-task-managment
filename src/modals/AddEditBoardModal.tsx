@@ -152,6 +152,7 @@ export const AddEditBoardModal = ({setDropDown,setBoardModelOpen, type}:any) => 
                         ...state,
                         {name: '', task : [], id : uuid()}
                     ])
+                    
                 }}
                 >
                 + Add new Column    
