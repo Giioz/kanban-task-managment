@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Boards, {Subtask } from '../interfaces/boardInterface'
 import dots from '../assets/dots.svg'
@@ -16,8 +16,11 @@ interface TaskModalProps {
 
 export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsTaskModalOpen}) => {
   const dispatch = useDispatch()
+
   const boards = useSelector((state:Boards) => state.boards)
   const board = boards.find(board => board.isActive)
+
+
   const columns = board?.columns
   const col = columns?.find((column, i) => colIndex === i)
   const task = col?.tasks.find((col, i) => taskIndex === i)
@@ -58,6 +61,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsT
     )
     setIsTaskModalOpen(false)
   }
+
+  
 
 
   const onChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
@@ -158,6 +163,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsT
               columns?.map((column,index) => (
                 <option
                 className='status-option'
+                key={index}
                 >
                   {column.name}
                 </option>
@@ -182,8 +188,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({colIndex, taskIndex, setIsT
                 <AddEditTaskModal 
                   setopenAddEditTask={setIsAddTaskModalOpen}
                   type='edit'
+                  device='mobile'
                   taskIndex={taskIndex}
                   prevColIndex={colIndex}
+                  setIsTaskModalOpen={setIsTaskModalOpen}
+                  
                 />
               )
             }
