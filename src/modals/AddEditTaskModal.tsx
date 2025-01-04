@@ -3,12 +3,20 @@ import { v4 as uuidv4 } from 'uuid'
 
 import crossIcon from '../assets/crossIcon.svg'
 import { useDispatch, useSelector } from "react-redux"
-import Boards, { Column } from "../interfaces/boardInterface"
+import Boards, { Column, Subtask, Task } from "../interfaces/boardInterface"
 import boardsSlice from "../redux/boardsSlice"
 
 
-export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
-    taskIndex, prevColIndex = 0 }:any)=> {
+interface AddEditTaskModalProps {
+    type : string,
+    device : string,
+    setopenAddEditTask : React.Dispatch<React.SetStateAction<boolean>>,
+    setIsTaskModalOpen?: React.Dispatch<React.SetStateAction<boolean>>,
+    taskIndex? : number,
+    prevColIndex? : number,
+}
+
+export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device, setopenAddEditTask, setIsTaskModalOpen, taskIndex, prevColIndex})=> {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   
@@ -21,8 +29,12 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
 
   const columns: any = board?.columns
   const col = columns?.find((col:Column, index:number) => index === prevColIndex)
+
+  const task = col ? col.tasks.find((task:Task, index:number) => index === taskIndex) : []
+
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [newColIndex, setNewColIndex] = useState(prevColIndex)
-  const [status, setStatus] = useState<string | null>(columns && prevColIndex >= 0 && prevColIndex < columns.length
+  const [status, setStatus] = useState<string | null>(columns && prevColIndex != undefined && prevColIndex >= 0 && prevColIndex < columns.length
       ? columns[prevColIndex].name
       : null
   );
@@ -32,6 +44,17 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
     { title: '', isCompleted: false, id : uuidv4() }
   ])
 
+
+  if(type === 'edit' && isFirstLoad) {
+    setSubtasks(
+        task.subtasks.map((subtask:Subtask) => {
+            return { ...subtask, id: uuidv4()}
+        })
+    )
+    setTitle(task.title)
+    setDescription(task.description)
+    setIsFirstLoad(false)
+   }
   const onChange = ((id:string, newValue:string) => {
     setSubtasks((prevState) => {
         const newState = [...prevState]
@@ -174,7 +197,7 @@ export const AddEditTaskModal = ({ type, device, setopenAddEditTask,
                 }
 
                 <button
-                className="mt-3 w-full items-center dark:text-[#635fc7] dark:bg-white text-white bg-[#635fc7 py-2 rounded-full"
+                className="mt-3 w-full items-center dark:text-[#635fc7] dark:bg-white text-white bg-[#635fc7] py-2 rounded-full"
                 >
                     + Add New Subtask
                 </button>
