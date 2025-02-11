@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuid } from "uuid"; // Importing uuid
+
 import data from '../data/data.json'
 
 
@@ -45,8 +47,9 @@ const boardsSlice = createSlice({
             const task = { title, description, subtasks, status };
             const board = state.find((board) => board.isActive);
             const column = board && board.columns.find((col, index) => index === newColIndex);
-            if(column)
-                column.tasks.push(task);
+            if(column){
+              column?.tasks?.push(task);
+            }
           },
           editTask: (state, action) => {
             const {
@@ -111,6 +114,14 @@ const boardsSlice = createSlice({
             if(newCol && task)
                 newCol.tasks.push(task);
           },
+          addColumn: (state, action) => {
+            const { name } = action.payload;
+            const board = state.find((board) => board.isActive);
+            if (board) {
+              board.columns.push({ name, tasks: [] }); // Removed 'id' property
+            }
+          },
+          
           deleteTask: (state, action) => {
             const payload = action.payload;
             const board = state.find((board) => board.isActive);
