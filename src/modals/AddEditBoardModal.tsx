@@ -9,7 +9,7 @@ import Boards from "../interfaces/boardInterface"
 export const AddEditBoardModal = ({setDropDown,setBoardModelOpen, type}:any) => {
   const dispatch = useDispatch()
   const [name, setName] = useState('')
-  const [isFirstLoad, setIsFirstLoad] = useState(false)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const board = useSelector( (state:any) => state.boards).find(
     (board:any) => board.isActive
   )
@@ -65,7 +65,9 @@ export const AddEditBoardModal = ({setDropDown,setBoardModelOpen, type}:any) => 
 
   const onSubmit = ((type:string) => {
         if(type === 'add'){
-            dispatch(boardsSlice.actions.addBoard({name, newColumns}))
+            newColumns.forEach(column => {
+                dispatch(boardsSlice.actions.addColumn({ name: column.name }));
+            });
         }
         else {
             dispatch(boardsSlice.actions.editBoard({name, newColumns}))
@@ -91,7 +93,7 @@ export const AddEditBoardModal = ({setDropDown,setBoardModelOpen, type}:any) => 
             <h3 
             className="text-lg"
             >
-                {type === 'edit' ? 'Edit' : 'Add New'} Board 
+                {type === 'edit' ? 'Edit' : 'Add New'} Board
             </h3>
             <div className="mt-8 flex flex-col space-y-3">
                 <label
