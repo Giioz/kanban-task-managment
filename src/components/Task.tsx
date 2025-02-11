@@ -25,9 +25,16 @@ export const Task: React.FC<TaskProps> = ({taskIndex, colIndex}) => {
           completed++
       })
     
+    const handleOnDrag = (e:React.DragEvent<HTMLDivElement>) => {
+      e.dataTransfer.setData("text", JSON.stringify({taskIndex, prevColIndex : colIndex}))
+    }
+
+
   return (
     <div>
         <div
+        draggable
+        onDragStart={handleOnDrag}
         onClick={() => {
           setIsTaskModalOpen(true)
         }}
