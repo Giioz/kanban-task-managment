@@ -20,7 +20,7 @@ export const Center: React.FC<CenterProps> = ({boardModelOpen, setBoardModelOpen
             
         ]
     )
-    const s = boardModelOpen
+  
     
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
 
@@ -41,13 +41,14 @@ export const Center: React.FC<CenterProps> = ({boardModelOpen, setBoardModelOpen
   return (
     <div
     className={
-        windowSize[0] >= 768 && isSideBarOpen ? 'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6 ml-[261px]' :
-        'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6'
+        windowSize[0] >= 768 && isSideBarOpen
+          ? " bg-[#f4f7fd]  scrollbar-hide h-screen flex dark:bg-[#20212c]  overflow-x-scroll gap-6  ml-[261px]"
+          : "bg-[#f4f7fd]  scrollbar-hide h-screen flex   dark:bg-[#20212c] overflow-x-scroll gap-6 "
     }
     >
         {
             windowSize[0] >= 768 && (
-                <SideBar />
+                <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen}/>
             )
         }
 
