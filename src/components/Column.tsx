@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Column as col, Task } from "../interfaces/boardInterface";
 import { shuffle } from "lodash";
 import { Task as TaskComp } from "./Task";
+import boardsSlice from "../redux/boardsSlice";
 interface ColumnProps {
     colIndex: number;
   }
@@ -32,15 +33,28 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
     
       
     }, [dispatch])
-    
+
+    const handleOnDragOver = (e:React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault()
+    }
+
+    const handleOnDrop = (e:React.DragEvent<HTMLDivElement>) => {
+      const { prevColIndex, taskIndex } = JSON.parse(e.dataTransfer.getData("text"))
+
+      if(colIndex !== prevColIndex){
+        dispatch(boardsSlice.actions.dragTask({colIndex, prevColIndex, taskIndex}))
+      }
+    }
 
   return (
     <div
+    onDrop={handleOnDrop}
+    onDragOver={handleOnDragOver}
     className="scrollbar-hide mx-5 pt-[90px] min-w-[280px]"
     >
       <p
       className="font-semibold flex items-center gap-2 tracking-widest
-      md:tracking-[2em] text-[#828fa3]"
+      md:tracking-normal text-[#828fa3]"
       >
         <div className={`rounded-full w-4 h-4 ${color}`}/>
         {/* bug here when choosing new created board */}
@@ -48,7 +62,7 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
       </p>
 
       {
-        col.tasks.map((task:Task, index:number) => (
+        col.tasks?.map((task:Task, index:number) => (
           <TaskComp key={index} taskIndex={index} colIndex={colIndex} />
         ))
       }
