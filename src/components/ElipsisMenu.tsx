@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const ElipsisMenu = ({type, setOpenEditModal, setOpenDeleteModal}:any) => {
   return (
      <div
