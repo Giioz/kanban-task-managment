@@ -13,6 +13,7 @@ export interface Subtask {
   export interface Column {
     name: string;
     tasks: Task[];
+    id : string
   }
   
   export interface Board {
