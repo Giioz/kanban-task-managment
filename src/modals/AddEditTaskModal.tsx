@@ -16,7 +16,7 @@ interface AddEditTaskModalProps {
   prevColIndex?: number,
 }
 
-export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device, setopenAddEditTask, setIsTaskModalOpen, taskIndex, prevColIndex }) => {
+export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device, setopenAddEditTask, setIsTaskModalOpen, taskIndex, prevColIndex = 0 }) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [isValid, setIsValid] = useState(true)
@@ -107,6 +107,7 @@ export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device
         })
       )
     }
+
     setopenAddEditTask(false)
   }
 
@@ -190,6 +191,12 @@ export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device
           }
 
           <button
+            onClick={() => {
+              setSubtasks((state) => [
+                ...state,
+                { title: "", isCompleted: false, id: uuidv4() },
+              ]);
+            }}
             className="mt-3 w-full items-center dark:text-[#635fc7] dark:bg-white text-white bg-[#635fc7] py-2 rounded-full"
           >
             + Add New Subtask
@@ -207,7 +214,7 @@ export const AddEditTaskModal: React.FC<AddEditTaskModalProps> = ({ type, device
             {
               columns?.map((column: Column, index: number) => (
                 <option
-                  value={column.name}
+                  
                   key={index}
                 >
                   {column.name}
