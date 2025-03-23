@@ -10,8 +10,9 @@ import { Switch } from "@headlessui/react";
 import useDarkMode from "../hooks/useDarkMode";
 import { useState } from "react";
 import boardsSlice from "../redux/boardsSlice";
+import { BoardType } from "./Header";
 
-export const HeaderDropdown = ({setDropdown, setBoardModelOpen}:any) => {
+export const HeaderDropdown = ({setDropdown, setBoardModelOpen, setBoardType}:any) => {
   const dispatch = useDispatch()
     // dark mode switch
   const [colorTheme, setTheme] = useDarkMode()
@@ -74,9 +75,11 @@ export const HeaderDropdown = ({setDropdown, setBoardModelOpen}:any) => {
                     <p
                     className="text-lg font-bold cursor-pointer"
                     onClick={() => {
+                        setBoardType(BoardType.ADD)
                         setBoardModelOpen(true);
                         setDropdown(false)
                     }}
+                  
                     >
                         + Create New Board
                     </p>
