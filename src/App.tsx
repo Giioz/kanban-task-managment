@@ -9,7 +9,6 @@ import { EmptyBoard } from './components/EmptyBoard'
 
 function App() {
   const dispatch = useDispatch()
-
   const boards  = useSelector((state:Boards) => state.boards) 
   const activeBoard = boards.find((board:Board) => board.isActive)
 
