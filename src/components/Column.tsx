@@ -52,14 +52,14 @@ export const Column: React.FC<ColumnProps> = ({colIndex}) => {
     onDragOver={handleOnDragOver}
     className="scrollbar-hide mx-5 pt-[90px] min-w-[280px]"
     >
-      <p
+      <span
       className="font-semibold flex items-center gap-2 tracking-widest
       md:tracking-normal text-[#828fa3]"
       >
         <div className={`rounded-full w-4 h-4 ${color}`}/>
         {/* bug here when choosing new created board */}
         {col.name} ({col?.tasks?.length})
-      </p>
+      </span>
 
       {
         col.tasks?.map((task:Task, index:number) => (
